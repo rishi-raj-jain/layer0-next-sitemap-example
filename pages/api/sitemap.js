@@ -1,13 +1,9 @@
-import { getOrigin } from '../lib/helper'
+import { getOrigin } from '../../lib/helper'
 
-const Sitemap = () => {
-  return null
-}
-
-export const getServerSideProps = async ({ req, res }) => {
+export default async function (req, res) {
   const BASE_URL = getOrigin(req)
   const fs = await import('fs')
-  const skipPages = { '/404': true, '/_error': true }
+  const skipPages = { '/404': true, '/_error': true, '/api/sitemap': true }
   const staticPaths = Object.keys(JSON.parse(fs.readFileSync('.next/serverless/pages-manifest.json', { encoding: 'utf8' })))
     .filter((i) => !(skipPages.hasOwnProperty(i) && skipPages[i]))
     .map((staticPagePath) => {
@@ -38,5 +34,3 @@ export const getServerSideProps = async ({ req, res }) => {
     props: {},
   }
 }
-
-export default Sitemap
